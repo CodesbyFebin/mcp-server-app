@@ -268,13 +268,16 @@ export function isServerIndexable(
   evidenceVerified: boolean,
   status: "published" | "unverified" | "draft" | "unknown"
 ): { indexable: boolean; reason: string; decidedAt: string } {
-  if (status === "published" && evidenceVerified && evidenceCount > 0) {
+  if (!published && status === "published") {
+    return { indexable: false, reason: "not-published", decidedAt: new Date().toISOString() };
+  }
+  if (published && status === "published" && evidenceVerified && evidenceCount > 0) {
     return { indexable: true, reason: "published+evidence+verified", decidedAt: new Date().toISOString() };
   }
-  if (status === "published" && evidenceCount === 0) {
+  if (published && status === "published" && evidenceCount === 0) {
     return { indexable: false, reason: "published+no-evidence", decidedAt: new Date().toISOString() };
   }
-  if (status === "published" && !evidenceVerified) {
+  if (published && status === "published" && !evidenceVerified) {
     return { indexable: false, reason: "published+unverified", decidedAt: new Date().toISOString() };
   }
   if (status === "draft" && evidenceVerified && evidenceCount > 0) {
