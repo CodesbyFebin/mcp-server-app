@@ -1,0 +1,14 @@
+{
+  "name": "@mcp/servers-api",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "compile": "tsc"
+  },
+  "dependencies": {
+    "@mcp/servers-auth": "0.1.0",
+    "@mcp/servers-api-client": "0.1.0"
+  }
+}

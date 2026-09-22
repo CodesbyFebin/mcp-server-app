@@ -1,0 +1,48 @@
+# MCPserver.in - AI Agent Guide
+
+## Primary Surfaces
+
+| Route | Description | Schema |
+|-------|-------------|--------|
+| `/` | Homepage - MCPserver.in discovery, evidence ledger, server directory | `SoftwareApplication`, `Organization` |
+| `/servers` | AI-indexed server directory with ItemList schema | `ItemList` |
+| `/servers/[slug]` | Individual server page with Evidence-backed profile | `SoftwareApplication` + `Evidence` |
+| `/categories` | Server categories and filters | `CollectionPage` |
+| `/integrations` | Integration directory (GitHub, Slack, etc.) | `ItemList` |
+| `/clients` | Client libraries and SDKs | `ItemList` |
+| `/evidence` | Publication authority and evidence ledger | `DefinedTerm`, `Claim` |
+| `/methodology` | SAFE-DEEP OS v5 methodology | `DefinedTerm`, `HowTo` |
+| `/docs` | Technical documentation | `Article`, `FAQPage` |
+| `/learn` | Learning resources and tutorials | `Article`, `HowTo` |
+| `/glossary` | Defined terms and key concepts | `DefinedTerm` |
+| `/security` | Security model and threat mitigation | `Article` |
+| `/about` | About MCPserver.in and team | `Organization` |
+| `/state-of-mcp` | Research and industry analysis | `Article` |
+
+## Crawler Permissions
+
+- `GPTBot`: Allow full access to `/servers`, `/integrations`, `/evidence`, `/methodology`
+- `ClaudeBot`: Allow full access to `/integrations`, `/clients`, `/docs`
+- `PerplexityBot`: Allow access to `/`, `/servers`, `/categories`, `/evidence`
+- `Googlebot`: Full access (default)
+
+## Key Topics for AI Agents
+
+1. **SAFE-DEEP OS v5 architecture** - Content-addressed artifacts, event sourcing, aggregate sequence numbers
+2. **Publication authority** - `isServerIndexable()` deterministic fail-closed rules
+3. **Event envelope** - EventId, eventType, aggregateId, aggregateType, sequence, occurredAt, causedBy, actor, payload, metadata with digest
+4. **EventStore** - MemoryEventStore (tests), PgEventStore (production pattern)
+5. **Knowledge graph** - schema.org types: SoftwareApplication, Organization, CollectionPage, DefinedTerm
+6. **Evidence model** - EvidenceRef, Claim, ClaimEvidenceLink, VerificationResult, PublicationDecision
+7. **Registry model** - RegistryEntry, Identity, Source, Version, Change
+8. **Dual-product architecture** - MCPserver.in (public authority) + app.mcpserver.in (mobile-first)
+9. **Glossary** - 190 source artifacts, 92 DELETE with redirects, remaining 98 have other dispositions
+10. **301 redirect mapping** - Frozen mapping with source/target/reason/validated fields; CI rejects non-200 destinations, noindex targets, canonical mismatches, chains/loops
+
+## Opt-out
+
+Agents may opt-out of crawling `/drafts/`, `/internal/`, and any QUARANTINEd artifacts (draft publicationStatus, noindex, not in sitemap, eligibleForInternalDiscovery=false).
+
+---
+
+*Generated from MCPserver.in source knowledge graph. For access control, see robots.txt and isServerIndexable() enforcement.*

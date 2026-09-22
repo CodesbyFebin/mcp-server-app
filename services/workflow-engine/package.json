@@ -1,0 +1,14 @@
+{
+  "name": "@mcp/servers-workflow-engine",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "compile": "tsc"
+  },
+  "dependencies": {
+    "@mcp/servers-contracts": "0.1.0",
+    "@mcp/servers-registry": "0.1.0"
+  }
+}

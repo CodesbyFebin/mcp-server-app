@@ -1,0 +1,22 @@
+{
+  "name": "mcp-server-app",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "services/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "compile": "tsc --noEmit -p packages/contracts/tsconfig.json && tsc --noEmit -p packages/evidence/tsconfig.json && tsc --noEmit -p packages/registry/tsconfig.json && tsc --noEmit -p packages/auth/tsconfig.json"
+  },
+  "dependencies": {
+    "turbo": "^1.13.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,101 @@
+# Public website - MCPserver.in (primary)
+www.mcpserver.in {
+  root * /data/web
+  encode gzip
+
+  # Serve .well-known files for AI agents
+  encode gzip
+  handle /.well-known/* {
+    reverse_proxy localhost:3000/.well-known/*
+  }
+
+  # SPA fallback - rewrite all routes to /index.html
+  file_server {
+    root * /data/web
+  }
+  rewrite /* /index.html last
+
+  # Security headers
+  header {
+    Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-self; frame-ancestors 'none';"
+    X-Content-Type-Options "nosniff"
+    X-Frame-Options "DENY"
+    Referrer-Policy "strict-origin-when-no-referrer"
+    Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  }
+}
+
+# Mobile app - app.mcpserver.in
+app.mcpserver.in {
+  root * /data/app
+  encode gzip
+
+  # SPA fallback
+  file_server {
+    root * /data/app
+  }
+  rewrite /* /index.html last
+
+  # Security headers
+  header {
+    Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-self; frame-ancestors 'none';"
+    X-Content-Type-Options "nosniff"
+    X-Frame-Options "SAMEORIGIN"
+    Referrer-Policy "strict-origin-when-no-referrer"
+  }
+}
+
+# API service
+api.mcpserver.in {
+  root * /data/api
+  encode gzip
+
+  # JSON-RPC and REST routes
+  reverse_proxy /v1/* localhost:8001
+
+  # Health check
+  header {
+    Content-Type "application/json"
+  }
+}
+
+# FastMCP backend
+mcp.mcpserver.in {
+  root * /data/mcp
+  encode gzip
+
+  # JSON-RPC routing
+  reverse_proxy localhost:8000
+
+  # Health check
+  header {
+    Content-Type "application/json"
+  }
+}
+
+# Catch-all: noindex any non-prod hostname
+# This prevents Google from indexing the .chatgpt.site preview as duplicate content
+# The hostname check is done at the HTTP level
+# In production, only www.mcpserver.in and app.mcpserver.in should be indexable
+
+# robots.txt for all services
+handle /robots.txt {
+  text/plain "User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /drafts/
+Disallow: /internal/
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /register/
+Disallow: /login/
+
+User-agent: GPTBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+
+Sitemap: https://www.mcpserver.in/sitemap.xml
+}

@@ -1,0 +1,8 @@
+Component,Current Status,Required Status,Gap,Priority
+Repository Structure,Monolithic,apps/services/packages,High,P0
+Database Schema,Unknown,PostgreSQL+RLS,High,P0
+Evidence Ledger,Missing,Tamper-evident chain,High,P0
+Gateway Plane,Unknown,MCP Transport+Policy,High,P0
+Secret Vault,Unknown,Provider-neutral interface,High,P0
+CI/CD,Pending,GitHub Actions+Lint/Test,Medium,P1
+Documentation,Partial,README+ARCHITECTURE,Medium,P1
